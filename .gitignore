@@ -1,0 +1,10 @@
+# Standard project files
+build.properties
+*~
+.DS_Store
+*.ipr
+*.iml
+*.iws
+# Project artefacts from building.
+ivy.jar
+build

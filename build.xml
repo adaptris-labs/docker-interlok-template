@@ -1,0 +1,108 @@
+<project basedir="." default="docker" name="interlok-docker-demo" xmlns:package="uri:package" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <property file="build.properties"/>
+  <tstamp>
+    <format property="today" pattern="yyyy-MM-dd" locale="en"/>
+  </tstamp>
+  <target name="init">
+    <property name="nexus.host" value="https://development.adaptris.net"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.tmp.dir" value="${build.dir}/tmp"/>
+    <property name="resources.dir" value="${basedir}/resources"/>
+    <property name="ivy.download.baseurl" value="${nexus.host}/nexus/content/groups/public/org/apache/ivy/ivy"/>
+    <property name="ivy.dir" value="${resources.dir}/ivy"/>
+    <property name="ivy.jar.file" value="${ivy.dir}/ivy.jar"/>
+    <property name="ivy.install.version" value="2.3.0"/>
+    <property name="ivy.download.url" value="${ivy.download.baseurl}/${ivy.install.version}/ivy-${ivy.install.version}.jar"/>
+    <property name="ivy.repo" value="nexus-snapshots"/>
+    <property name="ivy.xml" value="${ivy.dir}/ivy.xml"/>
+    <property name="ivy.settings.xml" value="${ivy.dir}/ivy-settings.xml"/>
+    <property name="ivy.logging" value="default"/>
+
+    <property name="interlok.download.baseurl" value="${nexus.host}/nightly_builds/v3.x/${today}"/>
+    <property name="interlok.download.basefs" value="base-filesystem.zip"/>
+
+    <property name="adp-core-version" value="3.4-SNAPSHOT"/>
+
+    <property name="adapter.staging.directory" value="${build.dir}/staging"/>
+    <property name="adapter.lib.directory" value="${adapter.staging.directory}/lib"/>
+    <property name="adapter.config.directory" value="${adapter.staging.directory}/config"/>
+    <property name="resources.config.dir" value="${resources.dir}/config"/>
+    <property name="swagger.version" value="2.2.3"/>
+    <property name="swagger.distribution" value="https://github.com/swagger-api/swagger-ui/archive/v${swagger.version}.zip"/>
+    <property name="docker.image.tag" value="${user.name}/${ant.project.name}"/>
+  </target>
+
+  <target name="download-ivy" depends="init" unless="skip.ivy.download">
+    <echo message="Downloading ivy..."/>
+    <get src="${ivy.download.url}" dest="${ivy.jar.file}" usetimestamp="true"/>
+  </target>
+
+  <target name="prepare-ivy" depends="download-ivy">
+    <path id="ivy.lib.path">
+      <pathelement location="${ivy.jar.file}"/>
+    </path>
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    <ivy:settings file="${ivy.settings.xml}" />
+    <ivy:resolve file="${ivy.xml}" refresh="true" conf="*" showprogress="false"/>
+    <ivy:cachepath pathid="antcontrib.classpath" conf="ant"/>
+    <typedef resource="net/sf/antcontrib/antlib.xml" classpathref="antcontrib.classpath" uri="uri:package"/>
+  </target>
+
+  <target name="download-libs" depends="prepare-ivy">
+    <mkdir dir="${adapter.lib.directory}"/>
+    <ivy:resolve file="${ivy.xml}" refresh="true" conf="compile,runtime,optional" showprogress="false" useCacheOnly="${ivy.offline.mode}" log="${ivy.logging}"/>
+    <ivy:retrieve pattern="${adapter.lib.directory}/[artifact].[ext]" conf="compile,runtime,optional" type="jar,zip,bundle,maven-plugin,orbit,dll" log="${ivy.logging}"/>
+    <delete>
+      <fileset dir="${adapter.lib.directory}">
+        <include name="**/*.pom"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="download-swagger" depends="init.dirs" unless="${skip.swagger}">
+    <get src="${swagger.distribution}" dest="${build.tmp.dir}/swagger-${swagger.version}.zip" usetimestamp="true"/>
+    <unzip src="${build.tmp.dir}/swagger-${swagger.version}.zip" dest="${build.tmp.dir}" overwrite="true"/>
+    <mkdir dir="${adapter.staging.directory}/webapps/swagger"/>
+    <copy todir="${adapter.staging.directory}/webapps/swagger">
+      <fileset dir="${build.tmp.dir}/swagger-ui-${swagger.version}/dist">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+    <replace preserveLastModified="true" file="${adapter.staging.directory}/webapps/swagger/index.html" token="http://petstore.swagger.io/v2/swagger.json" value="http://localhost:8080/adapter-web-gui/access/swagger.json"/>
+    <delete dir="${build.tmp.dir}/swagger-ui-${swagger.version}"/>
+  </target>
+
+  <target name="download-ui" depends="init.dirs" unless="${skip.nightly.ui}">
+    <get src="${interlok.download.baseurl}/${interlok.download.basefs}" dest="${build.dir}/${interlok.download.basefs}" usetimestamp="true"/>
+    <unzip src="${build.dir}/${interlok.download.basefs}" dest="${build.tmp.dir}" overwrite="true"/>
+    <copy todir="${adapter.staging.directory}/webapps" file="${build.tmp.dir}/webapps/adapter-web-gui.war"/>
+  </target>
+
+  <target name="clean" depends="init" description="Clean up artifacts">
+    <delete file="${ivy.jar.file}" failonerror="false"/>
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="init.dirs" depends="init">
+    <mkdir dir="${adapter.lib.directory}"/>
+    <mkdir dir="${adapter.config.directory}"/>
+    <mkdir dir="${build.tmp.dir}"/>
+  </target>
+
+  <target name="docker" depends="init.dirs,download-libs,download-swagger,download-ui">
+    <copy todir="${adapter.staging.directory}">
+      <fileset dir="${resources.dir}">
+        <include name="config/**"/>
+        <include name="Dockerfile"/>
+      </fileset>
+    </copy>
+    <exec executable="docker" dir="${adapter.staging.directory}">
+       <arg value="build"/>
+       <arg value="--tag"/>
+       <arg value="${docker.image.tag}"/>
+       <arg value="."/>
+    </exec>
+  </target>
+
+</project>
