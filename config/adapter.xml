@@ -1,0 +1,4 @@
+<adapter
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  <unique-id>${adapter.unique.id}</unique-id>
+</adapter>
