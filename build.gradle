@@ -1,0 +1,61 @@
+ext {
+  adpCoreVersion = project.hasProperty('adpCoreVersion') ? project.getProperty('adpCoreVersion') : '3.6-SNAPSHOT'
+  defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
+  dockerPrefix = System.properties.getProperty('user.name')
+}
+
+apply plugin: 'java'
+apply plugin: 'distribution'
+apply plugin: "com.palantir.docker"
+
+distTar.enabled=false
+distZip.enabled=false
+dockerfileZip.enabled=false
+compileJava.enabled=false
+processResources.enabled=false
+classes.enabled=false
+jar.enabled=false
+
+
+buildscript {
+    repositories {
+      maven {
+        url "https://plugins.gradle.org/m2/"
+      }
+    }
+    dependencies {
+      classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.11.0"
+    }
+}
+
+repositories {
+  maven { url "$defaultNexusRepo" }
+  maven { url "https://development.adaptris.net/nexus/content/groups/public" }
+  maven { url "https://development.adaptris.net/nexus/content/repositories/snapshots" }
+  maven { url "https://development.adaptris.net/nexus/content/repositories/releases" }
+}
+
+dependencies {
+  compile ("com.adaptris:adp-core:$adpCoreVersion") { changing= true}
+  compile ("com.adaptris:adp-xinclude:$adpCoreVersion") { changing= true}
+  compile ("com.adaptris:adp-varsub:$adpCoreVersion") { changing= true}
+  compile ("com.adaptris:adp-simple-csv:$adpCoreVersion") { changing=true}
+}
+
+
+distributions {
+    main {
+        contents {
+            into('lib') {
+                from(project.configurations.runtime)
+            }
+            rename '(.*)-[0-9]+\\..*.jar', '$1.jar'
+        }
+    }
+}
+
+docker {
+    name "$dockerPrefix/docker-interlok-template"
+    tags 'latest'
+    files tasks.installDist.outputs
+}
