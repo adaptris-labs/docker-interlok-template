@@ -15,7 +15,7 @@ ADD ant /opt/interlok/ant
 RUN cd ant && \
     ant -emacs deploy && \
     rm -rf /opt/interlok/ant && \
-    rm -rf /root/.ivy2
+    rm -rf ~/.ivy2
 
 ADD config /opt/interlok/config
 
