@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>docker-interlok-template</groupId>
+  <artifactId>docker-interlok-template</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>docker-interlok-template</name>
+
+  <properties>
+    <adp-core-version>3.6-SNAPSHOT</adp-core-version>
+    <skip.purge>true</skip.purge>
+    <public.repo.url>https://development.adaptris.net/nexus/content/groups/public</public.repo.url>
+    <docker.staging.dir>${project.build.directory}/docker</docker.staging.dir>
+  </properties>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.8</version>
+        <executions>
+          <!-- Purge dependencies from local repo -->
+          <execution>
+            <id>purge-local-dependencies</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>purge-local-repository</goal>
+            </goals>
+            <configuration>
+              <skip>${skip.purge}</skip>
+              <actTransitively>true</actTransitively>
+              <reResolve>false</reResolve>
+              <verbose>true</verbose>
+              <snapshotsOnly>true</snapshotsOnly>
+              <includes>
+                <include>com.adaptris</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <!-- This execution copies all dependencies to the target/lib directory -->
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeTypes>jar,dll</includeTypes>
+              <outputDirectory>${docker.staging.dir}/lib</outputDirectory>
+              <stripClassifier>true</stripClassifier>
+              <stripVersion>true</stripVersion>
+              <excludeGroupIds>commons-logging,log4j</excludeGroupIds>
+              <excludeArtifactIds>slf4j-log4j12</excludeArtifactIds>
+              <excludeClassifiers>javadoc</excludeClassifiers>
+            </configuration>
+          </execution>
+
+          <!-- Install any web applications -->
+          <execution>
+            <id>install-webapp</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeTypes>war</includeTypes>
+              <outputDirectory>${docker.staging.dir}/webapps</outputDirectory>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy adapter.xml and other project specific files to target/ -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${docker.staging.dir}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.sourceDirectory}/config</directory>
+                  <targetPath>/config</targetPath>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.4.13</version>
+        <configuration>
+          <imageName>${user.name}/${project.name}</imageName>
+          <dockerDirectory>${project.build.sourceDirectory}/docker</dockerDirectory>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <dependencies>
+    <!-- Base interlok dependencies -->
+    <dependency>
+      <groupId>com.adaptris</groupId>
+      <artifactId>adp-core</artifactId>
+      <version>${adp-core-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.adaptris</groupId>
+      <artifactId>adp-xinclude</artifactId>
+      <version>${adp-core-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.adaptris</groupId>
+      <artifactId>adp-varsub</artifactId>
+      <version>${adp-core-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.adaptris.ui</groupId>
+      <artifactId>interlok</artifactId>
+      <version>${adp-core-version}</version>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <!-- Repository definitions for Adaptris repos -->
+  <repositories>
+    <repository>
+      <id>nexus-public</id>
+      <url>${public.repo.url}</url>
+    </repository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>https://development.adaptris.net/nexus/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>nexus-snapshots</id>
+      <url>https://development.adaptris.net/nexus/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
+
+</project>
