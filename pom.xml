@@ -36,9 +36,10 @@
               <reResolve>false</reResolve>
               <verbose>true</verbose>
               <snapshotsOnly>true</snapshotsOnly>
-              <includes>
+              <resolutionFuzziness>groupId</resolutionFuzziness>
+              <manualIncludes>
                 <include>com.adaptris</include>
-              </includes>
+              </manualIncludes>
             </configuration>
           </execution>
 
