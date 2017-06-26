@@ -18,5 +18,3 @@ RUN cd ant && \
     rm -rf ~/.ivy2
 
 ADD config /opt/interlok/config
-
-ENTRYPOINT ["/opt/interlok/bin/adapter"]
