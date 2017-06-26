@@ -77,7 +77,7 @@
   <target name="download-ui" depends="init.dirs" unless="${skip.nightly.ui}">
     <get src="${interlok.download.baseurl}/${interlok.download.basefs}" dest="${build.dir}/${interlok.download.basefs}" usetimestamp="true"/>
     <unzip src="${build.dir}/${interlok.download.basefs}" dest="${build.tmp.dir}" overwrite="true"/>
-    <copy todir="${adapter.staging.directory}/webapps" file="${build.tmp.dir}/webapps/adapter-web-gui.war"/>
+    <copy todir="${adapter.staging.directory}/webapps" file="${build.tmp.dir}/webapps/interlok.war"/>
   </target>
 
   <target name="clean" depends="init" description="Clean up artifacts">

@@ -12,7 +12,8 @@ RUN apt-get update && \
 WORKDIR /opt/interlok
 ADD ant /opt/interlok/ant
 
-RUN cd ant && \
+RUN rm -f /opt/interlok/webapps/adapter-web-gui.war && \
+    cd ant && \
     ant -emacs deploy && \
     rm -rf /opt/interlok/ant && \
     rm -rf ~/.ivy2
