@@ -10,5 +10,3 @@ RUN rm -f /opt/interlok/webapps/adapter-web-gui.war
 ADD lib /opt/interlok/lib
 ADD config /opt/interlok/config
 ADD webapps /opt/interlok/webapps
-
-ENTRYPOINT ["/opt/interlok/bin/adapter"]
