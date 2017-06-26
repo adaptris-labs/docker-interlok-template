@@ -22,7 +22,7 @@
     <property name="interlok.download.baseurl" value="${nexus.host}/nightly_builds/v3.x/${today}"/>
     <property name="interlok.download.basefs" value="base-filesystem.zip"/>
 
-    <property name="adp-core-version" value="3.4-SNAPSHOT"/>
+    <property name="adp-core-version" value="3.6-SNAPSHOT"/>
 
     <property name="adapter.staging.directory" value="${build.dir}/staging"/>
     <property name="adapter.lib.directory" value="${adapter.staging.directory}/lib"/>
@@ -76,7 +76,7 @@
   <target name="download-ui" depends="init.dirs" unless="${skip.nightly.ui}">
     <get src="${interlok.download.baseurl}/${interlok.download.basefs}" dest="${build.dir}/${interlok.download.basefs}" usetimestamp="true"/>
     <unzip src="${build.dir}/${interlok.download.basefs}" dest="${build.tmp.dir}" overwrite="true"/>
-    <copy todir="${adapter.staging.directory}/webapps" file="${build.tmp.dir}/webapps/adapter-web-gui.war"/>
+    <copy todir="${adapter.staging.directory}/webapps" file="${build.tmp.dir}/webapps/interlok.war"/>
   </target>
 
   <target name="clean" depends="init" description="Clean up artifacts">
