@@ -55,7 +55,7 @@
               <outputDirectory>${docker.staging.dir}/lib</outputDirectory>
               <stripClassifier>true</stripClassifier>
               <stripVersion>true</stripVersion>
-              <excludeGroupIds>commons-logging,log4j</excludeGroupIds>
+              <excludeGroupIds>commons-logging,log4j,org.eclipse.jetty.aggregate</excludeGroupIds>
               <excludeArtifactIds>slf4j-log4j12</excludeArtifactIds>
               <excludeClassifiers>javadoc</excludeClassifiers>
             </configuration>
@@ -121,6 +121,23 @@
       <groupId>com.adaptris</groupId>
       <artifactId>adp-core</artifactId>
       <version>${adp-core-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty.aggregate</groupId>
+          <artifactId>jetty-all</artifactId>
+        </exclusion>
+      </exclusions>      
+    </dependency>
+    <dependency>
+      <groupId>com.adaptris</groupId>
+      <artifactId>interlok-common</artifactId>
+      <version>${adp-core-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty.aggregate</groupId>
+          <artifactId>jetty-all</artifactId>
+        </exclusion>
+      </exclusions>      
     </dependency>
     <dependency>
       <groupId>com.adaptris</groupId>
