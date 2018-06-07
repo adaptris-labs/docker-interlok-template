@@ -31,12 +31,12 @@ configurations() {
 
 dependencies {
   compile ("com.adaptris:adp-core:$adpCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-boot:$adpCoreVersion") { changing= true}
   compile ("com.adaptris:adp-xinclude:$adpCoreVersion") { changing= true}
   compile ("com.adaptris:adp-varsub:$adpCoreVersion") { changing= true}
   compile ("com.adaptris:adp-simple-csv:$adpCoreVersion") { changing=true}
-  war ("com.adaptris.ui:interlok:$adpCoreVersion") {
+  war ("com.adaptris.ui:interlok:$adpCoreVersion@war") {
     changing=true
-    transitive=false
   }
 }
 
