@@ -13,6 +13,7 @@ WORKDIR /opt/interlok
 ADD ant /opt/interlok/ant
 
 RUN rm -f /opt/interlok/webapps/adapter-web-gui.war && \
+    rm -f /opt/interlok/lib/adp-*.jar && \
     cd ant && \
     ant -emacs deploy && \
     rm -rf /opt/interlok/ant && \

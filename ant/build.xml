@@ -24,7 +24,7 @@
     <property name="swagger.version" value="2.2.3"/>
     <property name="swagger.distribution" value="https://github.com/swagger-api/swagger-ui/archive/v${swagger.version}.zip"/>
 
-    <property name="adp-core-version" value="3.6-SNAPSHOT"/>
+    <property name="interlok-core-version" value="3.8-SNAPSHOT"/>
 
     <property name="adapter.staging.directory" value="/opt/interlok"/>
     <property name="adapter.lib.directory" value="${adapter.staging.directory}/lib"/>
