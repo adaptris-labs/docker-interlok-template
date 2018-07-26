@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-  adpCoreVersion = project.hasProperty('adpCoreVersion') ? project.getProperty('adpCoreVersion') : '3.7-SNAPSHOT'
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.8-SNAPSHOT'
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
   dockerPrefix = System.properties.getProperty('user.name')
 }
@@ -30,12 +30,12 @@ configurations() {
 }
 
 dependencies {
-  compile ("com.adaptris:adp-core:$adpCoreVersion") { changing= true}
-  compile ("com.adaptris:interlok-boot:$adpCoreVersion") { changing= true}
-  compile ("com.adaptris:adp-xinclude:$adpCoreVersion") { changing= true}
-  compile ("com.adaptris:adp-varsub:$adpCoreVersion") { changing= true}
-  compile ("com.adaptris:adp-simple-csv:$adpCoreVersion") { changing=true}
-  war ("com.adaptris.ui:interlok:$adpCoreVersion@war") {
+  compile ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-boot:$interlokCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-xinclude:$interlokCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-varsub:$interlokCoreVersion") { changing= true}
+  compile ("com.adaptris:interlok-csv:$interlokCoreVersion") { changing=true}
+  war ("com.adaptris.ui:interlok:$interlokCoreVersion@war") {
     changing=true
   }
 }
