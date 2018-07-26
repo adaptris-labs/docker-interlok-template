@@ -9,7 +9,7 @@
   <name>docker-interlok-template</name>
 
   <properties>
-    <adp-core-version>3.6-SNAPSHOT</adp-core-version>
+    <interlok-core-version>3.8-SNAPSHOT</interlok-core-version>
     <skip.purge>true</skip.purge>
     <public.repo.url>https://development.adaptris.net/nexus/content/groups/public</public.repo.url>
     <docker.staging.dir>${project.build.directory}/docker</docker.staging.dir>
@@ -105,7 +105,7 @@
       <plugin>
         <groupId>com.spotify</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.4.13</version>
+        <version>1.0.0</version>
         <configuration>
           <imageName>${user.name}/${project.name}</imageName>
           <dockerDirectory>${project.build.sourceDirectory}/docker</dockerDirectory>
@@ -119,40 +119,52 @@
     <!-- Base interlok dependencies -->
     <dependency>
       <groupId>com.adaptris</groupId>
-      <artifactId>adp-core</artifactId>
-      <version>${adp-core-version}</version>
+      <artifactId>interlok-core</artifactId>
+      <version>${interlok-core-version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.eclipse.jetty.aggregate</groupId>
           <artifactId>jetty-all</artifactId>
         </exclusion>
-      </exclusions>      
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.adaptris</groupId>
       <artifactId>interlok-common</artifactId>
-      <version>${adp-core-version}</version>
+      <version>${interlok-core-version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.eclipse.jetty.aggregate</groupId>
           <artifactId>jetty-all</artifactId>
         </exclusion>
-      </exclusions>      
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.adaptris</groupId>
-      <artifactId>adp-xinclude</artifactId>
-      <version>${adp-core-version}</version>
+      <artifactId>interlok-xinclude</artifactId>
+      <version>${interlok-core-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty.aggregate</groupId>
+          <artifactId>jetty-all</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.adaptris</groupId>
-      <artifactId>adp-varsub</artifactId>
-      <version>${adp-core-version}</version>
+      <artifactId>interlok-varsub</artifactId>
+      <version>${interlok-core-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty.aggregate</groupId>
+          <artifactId>jetty-all</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.adaptris.ui</groupId>
       <artifactId>interlok</artifactId>
-      <version>${adp-core-version}</version>
+      <version>${interlok-core-version}</version>
       <type>war</type>
     </dependency>
   </dependencies>
