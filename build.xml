@@ -22,7 +22,7 @@
     <property name="interlok.download.baseurl" value="${nexus.host}/nightly_builds/v3.x/${today}"/>
     <property name="interlok.download.basefs" value="base-filesystem.zip"/>
 
-    <property name="adp-core-version" value="3.7-SNAPSHOT"/>
+    <property name="interlok-core-version" value="3.8-SNAPSHOT"/>
 
     <property name="adapter.staging.directory" value="${build.dir}/staging"/>
     <property name="adapter.lib.directory" value="${adapter.staging.directory}/lib"/>
