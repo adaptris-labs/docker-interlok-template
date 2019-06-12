@@ -3,7 +3,7 @@
   <credentials host="development.adaptris.net" realm="Sonatype Nexus Repository Manager" username="${ivy.user}" passwd="${ivy.password}"/>
   <properties file="${user.home}/.ivy2/ivy-settings.properties"/>
 
-  <property name="nexus-base-url" value="https://development.adaptris.net"/>
+  <property name="nexus-base-url" value="https://nexus.adaptris.net"/>
 
   <property name="nexus-public" value="${nexus-base-url}/nexus/content/groups/public" override="false"/>
   <property name="nexus-private" value="${nexus-base-url}/nexus/content/groups/private" override="false"/>
@@ -13,7 +13,7 @@
   <property name="nexus-private-snapshots" value="${nexus-base-url}/nexus/content/repositories/adaptris-private-snapshots/" override="false"/>
   <property name="nexus-private-releases" value="${nexus-base-url}/nexus/content/repositories/adaptris-private-releases/" override="false"/>
   <property name="default.ivy.repo" value="https://repo1.maven.org/maven2/" override="false"/>
-  
+
   <resolvers>
     <url name="nexus-snapshots" m2compatible="true" checkmodified="true" changingPattern=".*SNAPSHOT.*">
       <ivy pattern="${nexus-snapshots}/[organisation]/[module]/[revision]/ivy-[revision].xml"/>
@@ -41,7 +41,7 @@
       <ibiblio name="nexus-snapshots" m2compatible="true" root="${nexus-snapshots}" checkmodified="true" changingPattern=".*-SNAPSHOT"/>
       <ibiblio name="nexus-releases" m2compatible="true" root="${nexus-releases}"/>
       <ibiblio name="nexus-private" m2compatible="true" root="${nexus-private}"/>
-      <ibiblio name="thirdparty-snapshots" m2compatible="true" root="${thirdparty-snapshots}" changingPattern=".*SNAPSHOT.*" checkmodified="true"/>      
+      <ibiblio name="thirdparty-snapshots" m2compatible="true" root="${thirdparty-snapshots}" changingPattern=".*SNAPSHOT.*" checkmodified="true"/>
       <ibiblio name="nexus-private-snapshots" m2compatible="true" root="${nexus-private-snapshots}" changingPattern=".*SNAPSHOT.*" checkmodified="true"/>
       <ibiblio name="nexus-private-releases" m2compatible="true" root="${nexus-private-releases}"/>
     </chain>
@@ -51,7 +51,7 @@
       <resolver ref="ibiblio-chain"/>
     </chain>
     <chain name="chain-resolver">
-      <ibiblio name="default-ivy-repo" m2compatible="true" root="${default.ivy.repo}"/>      
+      <ibiblio name="default-ivy-repo" m2compatible="true" root="${default.ivy.repo}"/>
       <resolver ref="nexus-repo-resolver"/>
     </chain>
   </resolvers>
