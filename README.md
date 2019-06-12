@@ -1,6 +1,6 @@
 # docker-interlok-template
 
-Just a simple template for building a docker image using gradle. It is intended for overlaying a nightly build over the latest `adaptris/interlok` (https://hub.docker.com/r/adaptris/interlok/) image but you can still use it with a formal release.
+Just a simple template for building a docker image using gradle. It is intended for overlaying custom jars over the latest `adaptris/interlok` (https://hub.docker.com/r/adaptris/interlok/) image but you can still use it with a formal release.
 
 ## Getting Started
 
