@@ -1,6 +1,6 @@
 # docker-interlok-template
 
-Just a simple template for building a docker image using MAVEN. It is intended for overlaying a nightly build over the latest `adaptris/interlok` (https://hub.docker.com/r/adaptris/interlok/) image but you can still use it with a formal release.  This uses the spotify docker plugin (https://github.com/spotify/docker-maven-plugin).
+Just a simple template for building a docker image using MAVEN. It is intended for overlaying customisations over the latest `adaptris/interlok` (https://hub.docker.com/r/adaptris/interlok/) image. This uses the spotify docker plugin (https://github.com/spotify/docker-maven-plugin).
 
 ## Getting Started
 

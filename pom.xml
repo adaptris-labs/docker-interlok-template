@@ -9,9 +9,9 @@
   <name>docker-interlok-template</name>
 
   <properties>
-    <interlok-core-version>3.8-SNAPSHOT</interlok-core-version>
+    <interlok-core-version>3.8.4-RELEASE</interlok-core-version>
     <skip.purge>true</skip.purge>
-    <public.repo.url>https://development.adaptris.net/nexus/content/groups/public</public.repo.url>
+    <public.repo.url>https://nexus.adaptris.net/nexus/content/groups/public</public.repo.url>
     <docker.staging.dir>${project.build.directory}/docker</docker.staging.dir>
   </properties>
 
@@ -177,11 +177,11 @@
     </repository>
     <repository>
       <id>nexus-releases</id>
-      <url>https://development.adaptris.net/nexus/content/repositories/releases</url>
+      <url>https://nexus.adaptris.net/nexus/content/repositories/releases</url>
     </repository>
     <repository>
       <id>nexus-snapshots</id>
-      <url>https://development.adaptris.net/nexus/content/repositories/snapshots</url>
+      <url>https://nexus.adaptris.net/nexus/content/repositories/snapshots</url>
     </repository>
   </repositories>
 
