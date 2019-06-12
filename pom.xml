@@ -105,7 +105,7 @@
       <plugin>
         <groupId>com.spotify</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
         <configuration>
           <imageName>${user.name}/${project.name}</imageName>
           <dockerDirectory>${project.build.sourceDirectory}/docker</dockerDirectory>
