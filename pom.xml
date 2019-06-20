@@ -176,12 +176,8 @@
       <url>${public.repo.url}</url>
     </repository>
     <repository>
-      <id>nexus-releases</id>
-      <url>https://nexus.adaptris.net/nexus/content/repositories/releases</url>
-    </repository>
-    <repository>
-      <id>nexus-snapshots</id>
-      <url>https://nexus.adaptris.net/nexus/content/repositories/snapshots</url>
+      <id>nexus-interlok</id>
+      <url>https://nexus.adaptris.net/nexus/content/groups/interlok</url>
     </repository>
   </repositories>
 
