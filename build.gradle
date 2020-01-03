@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = '3.9.2-RELEASE'
+  interlokCoreVersion = '3.9.3-RELEASE'
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
   dockerPrefix = System.properties.getProperty('user.name')
 }
