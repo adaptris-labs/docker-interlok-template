@@ -5,6 +5,6 @@ EXPOSE 5555
 
 RUN rm -f /opt/interlok/lib/adp-*.jar
 
-ADD lib /opt/interlok/lib
-ADD webapps /opt/interlok/webapps
-ADD config /opt/interlok/config
+ADD ./build/docker/lib /opt/interlok/lib
+ADD ./build/docker/webapps /opt/interlok/webapps
+ADD ./build/docker/config /opt/interlok/config
