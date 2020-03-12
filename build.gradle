@@ -19,6 +19,7 @@ classes.enabled=false
 jar.enabled=false
 
 repositories {
+  mavenCentral()
   maven { url "$defaultNexusRepo" }
   maven { url "https://nexus.adaptris.net/nexus/content/groups/public" }
   maven { url "https://nexus.adaptris.net/nexus/content/groups/interlok" }
