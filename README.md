@@ -1,6 +1,8 @@
-# docker-interlok-template
+# This is an unloved branch
 
-__This is an unloved branch__
+You should use a gradle variant instead. 
+
+# docker-interlok-template
 
 Just a template for building a docker image. It is intended for overlaying a customisations over the latest [adaptris/interlok](https://hub.docker.com/r/adaptris/interlok/) docker image.
 
