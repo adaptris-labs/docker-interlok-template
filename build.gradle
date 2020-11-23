@@ -26,4 +26,4 @@ docker {
     files tasks.installDist.outputs
 }
 
-docker.dependsOn installDist
+docker.dependsOn check,installDist
