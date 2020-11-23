@@ -1,4 +1,4 @@
-FROM adaptris/interlok-base:snapshot-zulu
+FROM adaptris/interlok-base:latest-zulu
 
 EXPOSE 8080
 EXPOSE 5555
