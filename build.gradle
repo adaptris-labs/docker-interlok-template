@@ -1,59 +1,22 @@
 plugins {
-  id "java"
-  id "distribution"
   id "com.palantir.docker" version "0.25.0"
 }
 
 ext {
-  interlokCoreVersion = '3.11.0-RELEASE'
-  defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
+  interlokParentGradle = 'https://raw.githubusercontent.com/adaptris-labs/interlok-build-parent/master/build.gradle'
+  interlokVersion = '3.11.0-RELEASE'
+  includeWar = 'true'
   dockerPrefix = System.properties.getProperty('user.name')
 }
 
-distTar.enabled=false
-distZip.enabled=false
-dockerfileZip.enabled=false
-compileJava.enabled=false
-processResources.enabled=false
-classes.enabled=false
-jar.enabled=false
-
-repositories {
-  mavenCentral()
-  maven { url "$defaultNexusRepo" }
-  maven { url "https://nexus.adaptris.net/nexus/content/groups/public" }
-  maven { url "https://nexus.adaptris.net/nexus/content/groups/interlok" }
-}
-
-configurations() {
-  war{}
+allprojects {
+  apply from: "${interlokParentGradle}"
 }
 
 dependencies {
-  compile ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
-  compile ("com.adaptris:interlok-boot:$interlokCoreVersion") { changing= true}
-  compile ("com.adaptris:interlok-xinclude:$interlokCoreVersion") { changing= true}
-  compile ("com.adaptris:interlok-varsub:$interlokCoreVersion") { changing= true}
-  compile ("com.adaptris:interlok-csv:$interlokCoreVersion") { changing=true}
-  war ("com.adaptris.ui:interlok:$interlokCoreVersion@war") {
-    changing=true
-  }
-}
-
-
-distributions {
-    main {
-        contents {
-            into('lib') {
-                from(project.configurations.runtime)
-            }
-            into('webapps') {
-                from(project.configurations.war)
-            }
-            rename '(.*)-[0-9]+\\..*.jar', '$1.jar'
-            rename '(.*)-[0-9]+\\..*.war', '$1.war'
-        }
-    }
+  interlokRuntime ("com.adaptris:interlok-xinclude:$interlokVersion") { changing= true}
+  interlokRuntime ("com.adaptris:interlok-apache-http:$interlokVersion") { changing= true}
+  interlokJavadocs group: "com.adaptris", name: "interlok-apache-http", version: "$interlokVersion", classifier: "javadoc", changing: true, transitive: false
 }
 
 docker {
@@ -63,4 +26,4 @@ docker {
     files tasks.installDist.outputs
 }
 
-docker.dependsOn installDist
+docker.dependsOn check,installDist
