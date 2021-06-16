@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-java@v2.1.0
       with:
         java-version: 11
+        distribution: 'adopt'
     - name: Setup Ubuntu
       run: |
         sudo apt-get -y update
