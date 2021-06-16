@@ -1,4 +1,4 @@
-# docker-interlok-template
+# docker-interlok-template [![check](https://github.com/adaptris-labs/docker-interlok-template/actions/workflows/gradle.yaml/badge.svg)](https://github.com/adaptris-labs/docker-interlok-template/actions/workflows/gradle.yaml)
 
 Just a simple template for building a docker image using gradle. It is intended for overlaying custom jars over the latest `adaptris/interlok` (https://hub.docker.com/r/adaptris/interlok/) image but you can still use it with a formal release.
 
