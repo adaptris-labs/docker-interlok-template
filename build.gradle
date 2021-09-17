@@ -1,11 +1,12 @@
 plugins {
-  id "com.palantir.docker" version "0.28.0"
+  id 'java'
+  id 'com.google.cloud.tools.jib' version '3.1.4'
 }
 
 ext {
   interlokParentGradle = 'https://raw.githubusercontent.com/adaptris/interlok-build-parent/main/v4/build.gradle'
-  includeWar = 'true'
-  dockerPrefix = System.properties.getProperty('user.name')
+  dockerImageName = System.properties.getProperty('user.name') + "/interlok"
+  dockerTag="latest"
 }
 
 allprojects {
@@ -18,11 +19,36 @@ dependencies {
   interlokJavadocs group: "com.adaptris", name: "interlok-apache-http", version: "$interlokVersion", classifier: "javadoc", changing: true, transitive: false
 }
 
-docker {
-    name "$dockerPrefix/docker-interlok-template"
-    tags 'latest'
-    pull true
-    files tasks.installDist.outputs
+jib {
+  from {
+    image = 'adoptopenjdk:11-jdk'
+  }
+  to {
+    image = dockerImageName
+    tags = [ dockerTag ]
+  }
+  configurationName="interlokRuntime"
+  container {
+    entrypoint = [
+      "java",
+      "-Dsun.net.inetaddr.ttl=30",
+      "-Xmx1024m",
+      "-cp", "/app/config:/app/libs/*", 
+      "com.adaptris.core.management.SimpleBootstrap", 
+      "bootstrap.properties"
+    ]
+    ports = ['8080', '5555']
+    format = 'OCI'
+    creationTime="USE_CURRENT_TIMESTAMP"
+    workingDirectory="/app"
+    // user="interlok"
+  }
+  extraDirectories {
+    paths {
+      path {
+        from = file("src/main/interlok")
+        into = "/app"
+      }
+    }
+  }
 }
-
-docker.dependsOn check,installDist
