@@ -5,7 +5,7 @@ plugins {
 ext {
   interlokParentGradle = 'https://raw.githubusercontent.com/adaptris/interlok-build-parent/main/v4/build.gradle'
   includeWar = 'true'
-  dockerPrefix = System.properties.getProperty('user.name')
+  dockerPrefix = System.properties.getProperty('user.name').toLowerCase()
 }
 
 allprojects {
